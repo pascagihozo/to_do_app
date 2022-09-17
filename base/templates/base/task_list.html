@@ -1,0 +1,61 @@
+{% extends 'base/main.html' %}
+{% block content %}
+
+<div class='header-bar'>
+    <div>
+        <h1 id="red"> Hello {{ request.user|title }}</h1>
+        <h3 style="margin-top: -10px;">You have<i> {{ tasks.count }} </i> tasks</h3>
+    </div>
+    <div class="section">
+        {% if request.user.is_authenticated %}
+        {% comment %} <p> {{request.user}} </p> {% endcomment %}
+        <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+
+</div>
+
+
+<h1> My todo list {{color}} </h1>
+<a id="button" href="{% url 'task-create' %}">Add Task</a>
+<div class="search">
+<form method="GET">
+    <input type='text' name='search-area' value="{{search_input}}">
+    <input type="submit" value='search'>
+</form>
+</div>
+<table class="table">
+    <tr>
+        <th>Item</th>
+        <th>Priority</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        
+    </tr>
+    {% for task in tasks %}
+
+    <tr>
+        <td> {{task.title}} </td>
+        <td> {{task.priority}} </td>
+
+        {% comment %} <td> <th><label {{task.priority}}></label><th> {% endcomment %}
+        {% comment %} <td> <a href="{% url 'task' task.id %}">View</a> </td> {% endcomment %}
+        <td> <a href="{% url 'task-update' task.id %}">Edit</a> </td>
+        <td> <a href="{% url 'task-delete' task.id %}">Delete</a> </td>
+        
+
+            {% comment %} <select name="Priority" id="priories">
+              <option value="{{task.High}}">High</option>
+              <option value="task.Moderate">Moderate</option>
+              <option value="{{task.Low}}">Low</option>
+            </select> </td>  {% endcomment %}
+        
+    </tr>
+    {%empty%}
+        <h3> No Items in list </h3>
+    {% endfor %}
+</table>
+
+{% endblock content %}
